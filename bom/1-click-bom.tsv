@@ -1,0 +1,14 @@
+References	Qty	Description	Manufacturer	Partnummer
+BT1	1	Case Teko 11123 with three buttons and battery compartment	Teko	11123
+C1	1	C 100n Unpolarized capacitor 0805
+C3, C2	2	C Small 20pF Unpolarized capacitor 0603
+D1, D2	2	LED ALT White Sideemitting generic, alternativ symbol 1206	Xiasongxin	215 White SMD LED 2.8*1,2*0,8mm
+D3	1	LED ALT Green InGaN generic, alternativ symbol 0603	Everlight	19-213/GHC-XS1T1N/3T
+D4, D5, D6	3	D ALT 1N4148 Diode, alternativ symbol MiniMELF
+R1	1	R 1k5 Resistor 0603
+R2	1	R 270 Resistor 0603
+SW1	1	SW Push 50Hz button switch, generic, two pins SPST EVQP2
+SW2	1	SW Push 60Hz button switch, generic, two pins SPST EVQP2
+SW3	1	SW Push 300Hz button switch, generic, two pins SPST EVQP2
+U1	1	ATTINY25V-10SU ATTINY25V-10SU SO8 Wide, 2k Flash, 128B SRAM, EEPROM, Debug Wire SOIC-8 3.9x4.9mm Pitch1.27mm	Microchip
+Y1	1	Crystal 4.9152MHz Two pin crystal SMD HC49-SD

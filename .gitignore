@@ -1,0 +1,4 @@
+build/*
+cad/*.bak
+cad/*.kicad_pcb-bak
+
