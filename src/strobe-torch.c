@@ -62,7 +62,11 @@ typedef enum {MODE_50HZ, MODE_60HZ, MODE_300HZ, MODE_FALSE} mode_t;
 /* The LED is connected to Port B, Pin 1 (OC1A) */
 #define PWM_OUT   1
 
-typedef enum {PWM_50HZ = 24, PWM_60HZ = 20, PWM_300HZ = 8, PWM_FALSE = 0} compare_value_t;
+/* The actual LED frequency is 4.9152 MHz/256/8/...
+ *   12 = 200 Hz
+ *   10 = 240 Hz
+ *   12 = 600 Hz */
+typedef enum {PWM_50HZ = 12, PWM_60HZ = 10, PWM_300HZ = 4, PWM_FALSE = 0} compare_value_t;
 
 
 /************ Device specific functions ****/
