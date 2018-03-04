@@ -65,7 +65,7 @@ typedef enum {MODE_50HZ, MODE_60HZ, MODE_300HZ, MODE_FALSE} mode_t;
 /* The actual LED frequency is 4.9152 MHz/256/8/...
  *   12 = 200 Hz
  *   10 = 240 Hz
- *   12 = 600 Hz */
+ *    4 = 600 Hz */
 typedef enum {PWM_50HZ = 12, PWM_60HZ = 10, PWM_300HZ = 4, PWM_FALSE = 0} compare_value_t;
 
 
@@ -93,7 +93,7 @@ inline void init() {
      */
     TCCR1 = 0x94; /* 10010100 */
     
-    /* activate internal pull-up resistors */
+    /* Activate internal pull-up resistors */
     PORTB |= (1 << BTN_50HZ) | (1 << BTN_60HZ) | (1 << BTN_300HZ);
     /* Set PWM pin as output */
     DDRB = (1 << PWM_OUT);
@@ -157,6 +157,5 @@ int main(void) {
     }
     /* Do nothing and go to sleep mode to save battery power */
     sleep_enable();
-    sleep_bod_disable();
     sleep_cpu();
 }
