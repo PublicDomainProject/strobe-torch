@@ -72,7 +72,13 @@ typedef enum {PWM_50HZ = 12, PWM_60HZ = 10, PWM_300HZ = 4, PWM_FALSE = 0} compar
 /************ Device specific functions ****/
 
 inline void init() {
-    
+     /* Power Reduction Register
+      *   Bit 3 – PRTIM1: Power Reduction Timer/Counter1 disabled
+      *   Bit 2 – PRTIM0: Power Reduction Timer/Counter0 enabled
+      *   Bit 1 – PRUSI: Power Reduction USI enabled
+      *   Bit 0 – PRADC: Power Reduction ADC enabled */
+    PRR = 0x07;
+
     /* Clock Prescaler Change Enable */
     CLKPR = 0x80;
     /* Set clock prescaler to 256
