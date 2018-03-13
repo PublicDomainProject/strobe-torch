@@ -92,11 +92,15 @@ inline void init() {
     
     /* Initialize the timer/counter 1
      *   Clear Timer/Counter on Compare Match (CTC1 = 1)
-     *   Pulse Width Modulator A Enable (PWM1A = 0)
+     *   Pulse Width Modulator A Enable (PWM1A = 1)
      *   Comparator A mode set to disconnect OC1A output line (COM1A1, COM1A0 = 00)
      *   Set Timer 1 prescaler to 8 (CS13...CS10 = 0100)
      */
-    TCCR1 = 0x84; /* 10000100 */
+    //TCCR1 = 0x84; /* 11000100 */
+    TCCR1 = 0xB4;
+    
+    /* Enable Timer/Counter1 Overflow Flag */
+    TIMSK = (1 << TOIE1);
     
     /* Activate internal pull-up resistors, set PWM out to 0 */
     PORTB = (1 << BTN_50HZ) | (1 << BTN_60HZ) | (1 << BTN_300HZ);
@@ -111,6 +115,9 @@ inline void init() {
 inline mode_t read_buttons() {
     mode_t mode;
     uint8_t btn_pressed = 0;
+    
+    //debug
+    return MODE_50HZ;
     
     /* Buttons are low-active */
     if(bit_is_clear(PINB,BTN_50HZ)) {
@@ -176,6 +183,6 @@ int main(void) {
         set_pwm(PWM_FALSE);
     }
     /* Do nothing and go to sleep mode to save battery power */
-    sleep_enable();
-    sleep_cpu();
+    //debug sleep_enable();
+    //sleep_cpu();
 }
