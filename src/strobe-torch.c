@@ -45,6 +45,8 @@
 
 #include <avr/io.h>
 #include <avr/sleep.h>
+#include <avr/interrupt.h>
+
 
 typedef enum {MODE_50HZ, MODE_60HZ, MODE_300HZ, MODE_FALSE} mode_t;
 
@@ -62,11 +64,14 @@ typedef enum {MODE_50HZ, MODE_60HZ, MODE_300HZ, MODE_FALSE} mode_t;
 /* The LED is connected to Port B, Pin 1 (OC1A) */
 #define PWM_OUT   1
 
-/* The actual LED frequency is 4.9152 MHz/256/8/...
- *   12 = 200 Hz
- *   10 = 240 Hz
- *    4 = 600 Hz */
-typedef enum {PWM_50HZ = 12, PWM_60HZ = 10, PWM_300HZ = 4, PWM_FALSE = 0} compare_value_t;
+/* The frequency of the PWM will be Timer Clock 1 Frequency divided by (OCR1C value + 1). See the
+ * equation in the data sheet, page 87.
+ *
+ * The actual LED frequency is 4.9152 MHz/256/8/(x+1), x =
+ *   11 = 200 Hz
+ *    9 = 240 Hz
+ *    3 = 600 Hz */
+typedef enum {PWM_50HZ = 11, PWM_60HZ = 9, PWM_300HZ = 3, PWM_FALSE = 0} compare_value_t;
 
 
 /************ Device specific functions ****/
@@ -88,15 +93,16 @@ inline void init() {
     /* Initialize the timer/counter 1
      *   Clear Timer/Counter on Compare Match (CTC1 = 1)
      *   Pulse Width Modulator A Enable (PWM1A = 0)
-     *   Comparator A mode set to toggle the OC1A output line (COM1A1, COM1A0 = 01)
+     *   Comparator A mode set to disconnect OC1A output line (COM1A1, COM1A0 = 00)
      *   Set Timer 1 prescaler to 8 (CS13...CS10 = 0100)
      */
-    TCCR1 = 0x94; /* 10010100 */
+    TCCR1 = 0x84; /* 10000100 */
     
-    /* Activate internal pull-up resistors */
-    PORTB |= (1 << BTN_50HZ) | (1 << BTN_60HZ) | (1 << BTN_300HZ);
-    /* Set PWM pin as output */
-    DDRB = (1 << PWM_OUT);
+    /* Activate internal pull-up resistors, set PWM out to 0 */
+    PORTB = (1 << BTN_50HZ) | (1 << BTN_60HZ) | (1 << BTN_300HZ);
+    
+    /* Enable interrupts */
+    sei();
 }
 
 /* Reads the buttons and returns the according operating mode.
@@ -104,35 +110,49 @@ inline void init() {
  */
 inline mode_t read_buttons() {
     mode_t mode;
-    bool btn_pressed = false;
+    uint8_t btn_pressed = 0;
     
     /* Buttons are low-active */
     if(bit_is_clear(PINB,BTN_50HZ)) {
-	mode = MODE_50HZ;
-	btn_pressed = true;
+        mode = MODE_50HZ;
+        btn_pressed++;
     }
     if(bit_is_clear(PINB,BTN_60HZ)) {
-	mode = MODE_60HZ;
-	btn_pressed = true;
+        mode = MODE_60HZ;
+        btn_pressed++;
     }
     if(bit_is_clear(PINB,BTN_300HZ)) {
-	mode = MODE_300HZ;
-	btn_pressed = true;
+        mode = MODE_300HZ;
+        btn_pressed++;
     }
     
-    if(btn_pressed == false) {
-	return mode;
+    if(btn_pressed == 1) {
+        return mode;
     }
     else {
-	return MODE_FALSE;
+        return MODE_FALSE;
     }
 }
 
 inline void set_pwm(compare_value_t compare_value) {
-    /* Set Timer/Counter1 Output Compare Register A */
-    OCR1A = compare_value;
+    /* Set Timer/Counter1 max count */
+    OCR1C = compare_value;
 }
 
+ISR(TIM1_OVF_vect) {
+    if(bit_is_clear(DDRB, PWM_OUT)) {
+        /* Deactivate internal pull-up resistor */
+        PORTB &= ~(1 << PWM_OUT);
+        /* Set PWM pin as output */
+        DDRB = (1 << PWM_OUT);
+    }
+    else {
+        /* Set PWM pin as input (high-z) */
+        DDRB = 0;
+        /* Activate internal pull-up resistor */
+        PORTB |= (1 << PWM_OUT);
+    }
+}
 
 /*********************** Main app **********/
 int main(void) {
