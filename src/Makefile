@@ -53,7 +53,7 @@
 #----------------------------------------------------------------------------
 
 # MCU name
-MCU = attiny25
+MCU = attiny85
 
 
 # Processor frequency.
@@ -227,7 +227,7 @@ AVRDUDE_WRITE_FLASH = -U flash:w:$(TARGET).hex
 # Serial program downloading (SPI) disabled; [SPIEN=0] *
 # Watch-dog Timer disabled; [WDTON=0]
 # Self Programming disabled; [SELFPRGEN=0]
-AVRDUDE_FUSEBITS = -U hfuse:w:0x5F:m -U lfuse:w:0x4C:m -U efuse:w:0xFF:m
+AVRDUDE_FUSEBITS = -U hfuse:w:0xDF:m -U lfuse:w:0x4C:m -U efuse:w:0xFF:m
 
 # Mode 3: Further programming and verification disabled
 AVRDUDE_LOCKBITS = -V -U lock:w:0xFC:m
