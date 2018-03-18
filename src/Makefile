@@ -53,7 +53,7 @@
 #----------------------------------------------------------------------------
 
 # MCU name
-MCU = attiny85
+MCU = attiny25
 
 
 # Processor frequency.
@@ -221,7 +221,7 @@ AVRDUDE_WRITE_FLASH = -U flash:w:$(TARGET).hex
 # Clock output on PORTB4 disabled; [CKOUT=0]
 # Divide clock by 8 internally enabled; [CKDIV8=0]
 # Brown-out detection disabled; [BODLEVEL=111]
-# Debug Wire disabled; [DWEN=0] *
+# Debug Wire enabled; [DWEN=1] * (only during development)
 # Preserve EEPROM memory through the Chip Erase cycle disabled; [EESAVE=0]
 # Reset Disabled (Enable PB5 as i/o pin); [RSTDISBL=0] *
 # Serial program downloading (SPI) disabled; [SPIEN=0] *
