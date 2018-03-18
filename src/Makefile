@@ -88,7 +88,7 @@ ASRC =
 # Optimization level, can be [0, 1, 2, 3, s]. 
 #     0 = turn off optimization. s = optimize for size.
 #     (Note: 3 is not always the best optimization level. See avr-libc FAQ.)
-OPT = 2
+OPT = s
 
 
 # Debugging format.
@@ -157,8 +157,8 @@ PRINTF_LIB_MIN = -Wl,-u,vfprintf -lprintf_min
 PRINTF_LIB_FLOAT = -Wl,-u,vfprintf -lprintf_flt
 
 # If this is left blank, then it will use the Standard printf version.
-#PRINTF_LIB = 
-PRINTF_LIB = $(PRINTF_LIB_MIN)
+PRINTF_LIB = 
+#PRINTF_LIB = $(PRINTF_LIB_MIN)
 #PRINTF_LIB = $(PRINTF_LIB_FLOAT)
 
 
@@ -169,12 +169,12 @@ SCANF_LIB_MIN = -Wl,-u,vfscanf -lscanf_min
 SCANF_LIB_FLOAT = -Wl,-u,vfscanf -lscanf_flt
 
 # If this is left blank, then it will use the Standard scanf version.
-#SCANF_LIB = 
-SCANF_LIB = $(SCANF_LIB_MIN)
+SCANF_LIB = 
+#SCANF_LIB = $(SCANF_LIB_MIN)
 #SCANF_LIB = $(SCANF_LIB_FLOAT)
 
-
-MATH_LIB = -lm
+MATH_LIB = 
+#MATH_LIB = -lm
 
 
 
@@ -413,7 +413,8 @@ ifeq ($(DEBUG_BACKEND),simulavr)
 endif	
 	@echo break main >> $(GDBINIT_FILE)
 	
-debug: gdb-config $(TARGET).elf
+debug:
+	gdb-config $(TARGET).elf
 ifeq ($(DEBUG_BACKEND), avarice)
 	@echo Starting AVaRICE - Press enter when "waiting to connect" message displays.
 	@$(WINSHELL) /c start avarice --jtag $(JTAG_DEV) --erase --program --file \
