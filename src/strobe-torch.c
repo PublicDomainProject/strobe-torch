@@ -41,12 +41,9 @@
 
 #include <stdlib.h>
 #include <stdint.h>
-#include <stdbool.h>
 
 #include <avr/io.h>
 #include <avr/sleep.h>
-#include <avr/interrupt.h>
-
 
 typedef enum {MODE_50HZ, MODE_60HZ, MODE_300HZ, MODE_FALSE} mode_t;
 
@@ -61,13 +58,14 @@ typedef enum {MODE_50HZ, MODE_60HZ, MODE_300HZ, MODE_FALSE} mode_t;
 #define BTN_60HZ  0
 #define BTN_300HZ 5
 
+
 /* The LED is connected to Port B, Pin 1 (OC1A) */
 #define PWM_OUT   1
 
 /* The frequency of the PWM will be Timer Clock 1 Frequency divided by (OCR1C value + 1). See the
  * equation in the data sheet, page 87.
  *
- * The actual LED frequency is 4.9152 MHz/256/8/(x+1), x =
+ * The actual LED frequency is 4.9152 MHz/256/16/(x+1), x =
  *   11 = 200 Hz
  *    9 = 240 Hz
  *    3 = 600 Hz */
@@ -92,21 +90,17 @@ inline void init() {
     
     /* Initialize the timer/counter 1
      *   Clear Timer/Counter on Compare Match (CTC1 = 1)
-     *   Pulse Width Modulator A Enable (PWM1A = 1)
-     *   Comparator A mode set to disconnect OC1A output line (COM1A1, COM1A0 = 00)
-     *   Set Timer 1 prescaler to 8 (CS13...CS10 = 0100)
+     *   Pulse Width Modulator A disabled (PWM1A = 0)
+     *   Comparator A mode set to toggle the OC1A output line (COM1A1, COM1A0 = 01)
+     *   Set Timer 1 prescaler to 16 (CS13...CS10 = 0101)
      */
-    //TCCR1 = 0x84; /* 11000100 */
-    TCCR1 = 0xB4;
+    TCCR1 = (1<<CTC1) | (1<<PWM1A) | (1<<COM1A1) | (1<<CS12) | (1<<CS10);
+    //0xB4; /* 11000100 */
     
-    /* Enable Timer/Counter1 Overflow Flag */
-    TIMSK = (1 << TOIE1);
-    
-    /* Activate internal pull-up resistors, set PWM out to 0 */
-    PORTB = (1 << BTN_50HZ) | (1 << BTN_60HZ) | (1 << BTN_300HZ);
-    
-    /* Enable interrupts */
-    sei();
+    /* Activate internal pull-up resistors */
+    PORTB |= (1 << BTN_50HZ) | (1 << BTN_60HZ) | (1 << BTN_300HZ);
+    /* Set PWM pin as output */
+    DDRB = (1 << PWM_OUT);
 }
 
 /* Reads the buttons and returns the according operating mode.
@@ -116,19 +110,16 @@ inline mode_t read_buttons() {
     mode_t mode;
     uint8_t btn_pressed = 0;
     
-    //debug
-    return MODE_50HZ;
-    
     /* Buttons are low-active */
-    if(bit_is_clear(PINB,BTN_50HZ)) {
+    if((PINB & (1 << BTN_50HZ)) != 0) {
         mode = MODE_50HZ;
         btn_pressed++;
     }
-    if(bit_is_clear(PINB,BTN_60HZ)) {
+    if((PINB & (1 << BTN_60HZ)) != 0) {
         mode = MODE_60HZ;
         btn_pressed++;
     }
-    if(bit_is_clear(PINB,BTN_300HZ)) {
+    if((PINB & (1 << BTN_300HZ)) != 0) {
         mode = MODE_300HZ;
         btn_pressed++;
     }
@@ -142,30 +133,18 @@ inline mode_t read_buttons() {
 }
 
 inline void set_pwm(compare_value_t compare_value) {
-    /* Set Timer/Counter1 max count */
+    /* Set maximum for Timer/Counter1 */
     OCR1C = compare_value;
+    OCR1A = (compare_value >> 1);
 }
 
-ISR(TIM1_OVF_vect) {
-    if(bit_is_clear(DDRB, PWM_OUT)) {
-        /* Deactivate internal pull-up resistor */
-        PORTB &= ~(1 << PWM_OUT);
-        /* Set PWM pin as output */
-        DDRB = (1 << PWM_OUT);
-    }
-    else {
-        /* Set PWM pin as input (high-z) */
-        DDRB = 0;
-        /* Activate internal pull-up resistor */
-        PORTB |= (1 << PWM_OUT);
-    }
-}
 
 /*********************** Main app **********/
 int main(void) {
     mode_t button_pressed;
     
     init();
+    
     button_pressed = read_buttons();
     
     switch(button_pressed) {
@@ -182,7 +161,8 @@ int main(void) {
         /* More than one button pressed. */
         set_pwm(PWM_FALSE);
     }
+    
     /* Do nothing and go to sleep mode to save battery power */
-    //debug sleep_enable();
-    //sleep_cpu();
+    sleep_enable();
+    sleep_cpu();
 }

@@ -1,11 +1,11 @@
 #####################################################################
 # Makefile - Build-file for the GNU Make utility                    #
 # $Id: $
-# Version 1.98ß                                                     #
+# Version 1.98                                                     #
 #####################################################################
 # strobe-torch is Copyright (C) 2018 Christoph Zimmermann           #
 # based on WinAVR Makefile Template written by Eric B. Weddington,  #
-# Jörg Wunsch, et al.                                               #
+# JÃ¶rg Wunsch, et al.                                               #
 #####################################################################
 # This program is free software; you can redistribute it and/or     #
 # modify it under the terms of the GNU General Public License       #
