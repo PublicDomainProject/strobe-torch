@@ -54,22 +54,21 @@ typedef enum {MODE_50HZ, MODE_60HZ, MODE_300HZ, MODE_FALSE} mode_t;
  * 50 Hz    Pin 2
  * 60 Hz    Pin 0
  * 300 Hz   Pin 5 */
-#define BTN_50HZ  2
-#define BTN_60HZ  0
+#define BTN_50HZ  1
+#define BTN_60HZ  2
 #define BTN_300HZ 5
 
-
 /* The LED is connected to Port B, Pin 1 (OC1A) */
-#define PWM_OUT   1
+#define PWM_OUT   0
 
 /* The frequency of the PWM will be Timer Clock 1 Frequency divided by (OCR1C value + 1). See the
  * equation in the data sheet, page 87.
  *
- * The actual LED frequency is 4.9152 MHz/256/16/(x+1), x =
- *   11 = 200 Hz
- *    9 = 240 Hz
+ * The actual LED frequency is 4.9152 MHz/256/8/(x+1), x =
+ *   23 = 100 Hz
+ *   19 = 120 Hz
  *    3 = 600 Hz */
-typedef enum {PWM_50HZ = 11, PWM_60HZ = 9, PWM_300HZ = 3, PWM_FALSE = 0} compare_value_t;
+typedef enum {PWM_50HZ = 23, PWM_60HZ = 19, PWM_300HZ = 3} compare_value_t;
 
 
 /************ Device specific functions ****/
@@ -88,24 +87,15 @@ inline void init() {
      *   This sets the Frequency to 4.9152 MHz/256 = 19.2 kHz */
     CLKPR = 0x08;
     
-    /* Initialize the timer/counter 1
-     *   Clear Timer/Counter on Compare Match (CTC1 = 1)
-     *   Pulse Width Modulator A disabled (PWM1A = 0)
-     *   Comparator A mode set to toggle the OC1A output line (COM1A1, COM1A0 = 01)
-     *   Set Timer 1 prescaler to 16 (CS13...CS10 = 0101)
-     */
-    TCCR1 = (1<<CTC1) | (1<<PWM1A) | (1<<COM1A1) | (1<<CS12) | (1<<CS10);
-    //0xB4; /* 11000100 */
-    
     /* Activate internal pull-up resistors */
     PORTB |= (1 << BTN_50HZ) | (1 << BTN_60HZ) | (1 << BTN_300HZ);
+    
     /* Set PWM pin as output */
     DDRB = (1 << PWM_OUT);
 }
 
 /* Reads the buttons and returns the according operating mode.
- *   If more than one button is pressed return value is MODE_FALSE
- */
+ *   If more than one button is pressed return value is MODE_FALSE */
 inline mode_t read_buttons() {
     mode_t mode;
     uint8_t btn_pressed = 0;
@@ -133,6 +123,14 @@ inline mode_t read_buttons() {
 }
 
 inline void set_pwm(compare_value_t compare_value) {
+    /* Initialize the timer/counter 1
+     *   Clear Timer/Counter on Compare Match (CTC1 = 1)
+     *   Pulse Width Modulator A enabled (PWM1A = 1)
+     *   Comparator A mode set to toggle both the normal and inverted OC1A output line (COM1A1, COM1A0 = 01)
+     *   Set Timer 1 prescaler to 8 (CS13...CS10 = 0100)
+     */
+    TCCR1 = (1<<CTC1) | (1<<PWM1A) | (1<<COM1A0) | (1<<CS12);
+    
     /* Set maximum for Timer/Counter1 */
     OCR1C = compare_value;
     OCR1A = (compare_value >> 1);
@@ -158,8 +156,7 @@ int main(void) {
         set_pwm(PWM_300HZ);
     break;
     default:
-        /* More than one button pressed. */
-        set_pwm(PWM_FALSE);
+    break;
     }
     
     /* Do nothing and go to sleep mode to save battery power */
