@@ -50,10 +50,7 @@ typedef enum {MODE_50HZ, MODE_60HZ, MODE_300HZ, MODE_FALSE} mode_t;
 
 /************ Device specific definitions ****/
 
-/* Pinning of the buttons to the input pins (all on Port B)
- * 50 Hz    Pin 2
- * 60 Hz    Pin 0
- * 300 Hz   Pin 5 */
+/* Pinning of the buttons to the input pins (all on Port B) */
 #define BTN_50HZ  1
 #define BTN_60HZ  2
 #define BTN_300HZ 5
@@ -101,16 +98,16 @@ inline mode_t read_buttons() {
     uint8_t btn_pressed = 0;
     
     /* Buttons are low-active */
-    if((PINB & (1 << BTN_50HZ)) != 0) {
-        mode = MODE_50HZ;
+    if((PINB  & (1 << BTN_300HZ)) == 0) {
+        mode = MODE_300HZ;
         btn_pressed++;
     }
-    if((PINB & (1 << BTN_60HZ)) != 0) {
+    if((PINB  & (1 << BTN_60HZ)) == 0) {
         mode = MODE_60HZ;
         btn_pressed++;
     }
-    if((PINB & (1 << BTN_300HZ)) != 0) {
-        mode = MODE_300HZ;
+    if((PINB  & (1 << BTN_50HZ)) == 0) {
+        mode = MODE_50HZ;
         btn_pressed++;
     }
     
@@ -143,7 +140,10 @@ int main(void) {
     
     init();
     
-    button_pressed = read_buttons();
+    do {
+        button_pressed = read_buttons();
+    }
+    while(button_pressed == MODE_FALSE);
     
     switch(button_pressed) {
     case (MODE_50HZ):
