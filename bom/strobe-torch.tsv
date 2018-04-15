@@ -1,14 +1,13 @@
-References	Qty	Description	Manufacturer	Partnummer
-BT1	1	Case Teko 11123 with three buttons and battery compartment	Teko	11123
-C1	1	C 100n Unpolarized capacitor 0805
-C3, C2	2	C Small 20pF Unpolarized capacitor 0603
-D1, D2	2	LED ALT White Sideemitting generic, alternativ symbol 1206	Xiasongxin	215 White SMD LED 2.8*1,2*0,8mm
-D3	1	LED ALT Green InGaN generic, alternativ symbol 0603	Everlight	19-213/GHC-XS1T1N/3T
-D4, D5, D6	3	D ALT 1N4148 Diode, alternativ symbol MiniMELF
-R1	1	R 1k5 Resistor 0603
-R2	1	R 270 Resistor 0603
-SW1	1	SW Push 50Hz button switch, generic, two pins SPST EVQP2
-SW2	1	SW Push 60Hz button switch, generic, two pins SPST EVQP2
-SW3	1	SW Push 300Hz button switch, generic, two pins SPST EVQP2
-U1	1	ATTINY25V-10SU ATTINY25V-10SU SO8 Wide, 2k Flash, 128B SRAM, EEPROM, Debug Wire SOIC-8 3.9x4.9mm Pitch1.27mm	Microchip
-Y1	1	Crystal 4.9152MHz Two pin crystal SMD HC49-SD
+References	Qty	Description	Package	Manufacturer	Partnummer
+BT1	1	Battery compartment of the case		Teko	1112x
+C1	1	100n Unpolarized capacitor	0805		
+C2, C3	2	20pF Unpolarized capacitor	0603		
+D1, D2	2	LED White Sideemitting 2.8*1,2*0,8mm	215	Xiasongxin	215 White SMD LED 2.8*1,2*0,8mm
+D3	1	LED Green InGaN	0603	Everlight	19-213/GHC-XS1T1N/3T
+D4, D5	2	BAT54A schottky barrier diode	SOT-23		
+Q1	1	BSS138 50V Vds, 0.22 A Id, N-channel MOSFET	SOT-23		
+R1	1	1k8 Resistor	0603		
+R2	1	150 Resistor	0603		
+SW1, SW2, SW3	3	Push button switch, SPST	PTS645		
+U1	1	ATTINY25V-10SU 2kB Flash, 128B EEPROM	SO-8 Wide 5.3x6.2mm	Microchip	
+Y1	1	Crystal 4.9152MHz, two pin, SMD	HC49-SD		
