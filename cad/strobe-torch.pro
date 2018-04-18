@@ -1,4 +1,4 @@
-update=Son 25 Mär 2018 22:43:27 CEST
+update=Die 17 Apr 2018 00:04:23 CEST
 version=1
 last_client=kicad
 [general]
@@ -27,16 +27,6 @@ ModuleOutlineThickness=0.150000000000
 [cvpcb]
 version=1
 NetIExt=net
-[schematic_editor]
-version=1
-PageLayoutDescrFile=
-PlotDirectoryName=
-SubpartIdSeparator=0
-SubpartFirstId=65
-NetFmtName=Pcbnew
-SpiceForceRefPrefix=0
-SpiceUseNetNumbers=0
-LabSize=60
 [eeschema]
 version=1
 LibDir=/home/chrigi/Projects/KiCAD
@@ -136,3 +126,13 @@ LibName92=Worldsemi
 LibName93=Xicor
 LibName94=zetex
 LibName95=Zilog
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=Pcbnew
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60
