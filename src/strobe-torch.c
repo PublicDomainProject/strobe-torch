@@ -83,10 +83,10 @@ inline void init() {
     /* Set clock prescaler to 256
      *   This sets the Frequency to 4.9152 MHz/256 = 19.2 kHz */
     CLKPR = 0x08;
-    
+
     /* Activate internal pull-up resistors */
     PORTB |= (1 << BTN_50HZ) | (1 << BTN_60HZ) | (1 << BTN_300HZ);
-    
+
     /* Set PWM pin as output */
     DDRB = (1 << PWM_OUT);
 }
@@ -96,7 +96,7 @@ inline void init() {
 inline mode_t read_buttons() {
     mode_t mode;
     uint8_t btn_pressed = 0;
-    
+
     /* Buttons are low-active */
     if((PINB  & (1 << BTN_300HZ)) == 0) {
         mode = MODE_300HZ;
@@ -110,7 +110,7 @@ inline mode_t read_buttons() {
         mode = MODE_50HZ;
         btn_pressed++;
     }
-    
+
     if(btn_pressed == 1) {
         return mode;
     }
@@ -127,7 +127,7 @@ inline void set_pwm(compare_value_t compare_value) {
      *   Set Timer 1 prescaler to 8 (CS13...CS10 = 0100)
      */
     TCCR1 = (1<<CTC1) | (1<<PWM1A) | (1<<COM1A0) | (1<<CS12);
-    
+
     /* Set maximum for Timer/Counter1 */
     OCR1C = compare_value;
     OCR1A = (compare_value >> 1);
@@ -137,14 +137,14 @@ inline void set_pwm(compare_value_t compare_value) {
 /*********************** Main app **********/
 int main(void) {
     mode_t button_pressed;
-    
+
     init();
-    
+
     do {
         button_pressed = read_buttons();
     }
     while(button_pressed == MODE_FALSE);
-    
+
     switch(button_pressed) {
     case (MODE_50HZ):
         set_pwm(PWM_50HZ);
@@ -158,7 +158,7 @@ int main(void) {
     default:
     break;
     }
-    
+
     /* Do nothing and go to sleep mode to save battery power */
     sleep_enable();
     sleep_cpu();
