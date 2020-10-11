@@ -15,7 +15,10 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
-   sodipodi:docname="Teko 11123 milling.svg">
+   sodipodi:docname="Teko 11123 milling.svg"
+   inkscape:export-filename="/home/chrigi/Projects/Strobe-Torch/github/case/Teko 11123 milling.png"
+   inkscape:export-xdpi="299.82501"
+   inkscape:export-ydpi="299.82501">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -23,17 +26,17 @@
      pagecolor="#ffffff"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="0.0"
+     inkscape:pageopacity="1"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.959798"
-     inkscape:cx="197.03931"
-     inkscape:cy="52.869748"
+     inkscape:zoom="0.9899495"
+     inkscape:cx="176.56222"
+     inkscape:cy="31.279258"
      inkscape:document-units="mm"
      inkscape:current-layer="layer2"
      showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1062"
-     inkscape:window-x="1280"
+     inkscape:window-width="1280"
+     inkscape:window-height="752"
+     inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
      showguides="true"
@@ -41,7 +44,7 @@
      inkscape:measure-start="-159.241,951.975"
      inkscape:measure-end="-159.437,938.005">
     <sodipodi:guide
-       position="47.943919,19.77288"
+       position="47.877106,19.772881"
        orientation="0,1"
        id="guide928"
        inkscape:locked="false" />
@@ -69,7 +72,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -105,14 +108,14 @@
      inkscape:label="milling"
      transform="translate(89.976008,-18.550346)">
     <rect
-       style="fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.40000004;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.40000001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect923"
        width="5"
-       height="3"
+       height="2"
        x="-44.610989"
-       y="42.114071"
-       rx="1.5"
-       ry="1.5" />
+       y="43.109955"
+       rx="1"
+       ry="1" />
     <polygon
        id="polygon823"
        points="120.142,102.025 120.142,92.0246 110.142,97.0246 "
@@ -133,7 +136,7 @@
     <rect
        style="fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.39999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect877-5"
-       width="9.8691807"
+       width="9.1843023"
        height="0.40000001"
        x="-53.504791"
        y="-45.01099"
@@ -141,7 +144,7 @@
     <rect
        style="fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.39999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect877-5-4"
-       width="9.9359989"
+       width="9.2511215"
        height="0.40000001"
        x="-53.540306"
        y="-39.610989"
@@ -186,7 +189,7 @@
     <rect
        style="fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.39999995;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect877-5-4-4"
-       width="31.718466"
+       width="31.785282"
        height="0.40000001"
        x="10.313622"
        y="-45.514877"
@@ -207,14 +210,14 @@
        id="rect877-5-4-4-3"
        width="25.504448"
        height="0.40000001"
-       x="16.479975"
-       y="-42.103027"
+       x="16.555145"
+       y="-43.105286"
        transform="scale(-1)" />
     <polygon
        id="polygon823-3-4"
-       points="120.142,92.0246 110.142,97.0246 120.142,102.025 "
+       points="110.142,97.0246 120.142,102.025 120.142,92.0246 "
        style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:3.35127473;stroke-opacity:1"
-       transform="matrix(0,-0.22979482,0.10849874,0,-26.994549,67.041271)" />
+       transform="matrix(0,-0.22979482,0.10849874,0,-26.994549,67.957861)" />
     <polygon
        id="polygon825-0-9"
        points="205.355,102.025 215.355,97.0246 205.355,92.0246 "
@@ -231,13 +234,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;font-size:4.23333311px;line-height:125%;font-family:'URW Gothic L';-inkscape-font-specification:'URW Gothic L, Semi-Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="-35.536327"
+       x="-36.065495"
        y="-16.961655"
        id="text911-3-4"
        transform="rotate(-90)"><tspan
          sodipodi:role="line"
-         id="tspan1008"
-         x="-35.536327"
-         y="-16.961655">3</tspan></text>
+         id="tspan844"
+         x="-36.065495"
+         y="-16.961655">2</tspan></text>
   </g>
 </svg>
