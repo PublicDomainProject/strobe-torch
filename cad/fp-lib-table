@@ -1,4 +1,6 @@
 (fp_lib_table
-  (lib (name Battery_Holder)(type KiCad)(uri "$(KIPRJMOD)/Battery_Holder.pretty")(options "")(descr ""))
-  (lib (name LEDs_Side_Emitting)(type KiCad)(uri "$(KIPRJMOD)/LEDs_Side_Emitting.pretty")(options "")(descr ""))
+  (version 7)
+  (lib (name "Battery_Holder")(type "KiCad")(uri "$(KIPRJMOD)/Battery_Holder.pretty")(options "")(descr ""))
+  (lib (name "LEDs_Side_Emitting")(type "KiCad")(uri "$(KIPRJMOD)/LEDs_Side_Emitting.pretty")(options "")(descr ""))
+  (lib (name "Button")(type "KiCad")(uri "${KIPRJMOD}/Button.pretty")(options "")(descr ""))
 )
