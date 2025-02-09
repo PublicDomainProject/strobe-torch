@@ -21,17 +21,31 @@
  *
  ***************************************************************************
  * Fuse bit configuration:
+ *   - Production setting with 60 Hz mode and disabled reset input
  *   Ext. Crystal Osc.; Frequency 3.0-8.0 MHz; Start-up time PWRDWN/RESET: 258 CK/14 CK + 4.1 ms; [CKSEL=1100 SUT=00]
  *   Clock output on PORTB4 disabled; [CKOUT=0]
  *   Divide clock by 8 internally enabled; [CKDIV8=0]
  *   Brown-out detection disabled; [BODLEVEL=111]
- *   Debug Wire disabled; [DWEN=0] *
+ *   Debug Wire disabled; [DWEN=1] * (only during development)
  *   Preserve EEPROM memory through the Chip Erase cycle disabled; [EESAVE=0]
  *   Reset Disabled (Enable PB5 as i/o pin); [RSTDISBL=0] *
- *   Serial program downloading (SPI) disabled; [SPIEN=0] *
+ *   Serial program downloading (SPI) enabled; [SPIEN=0] *
  *   Watch-dog Timer disabled; [WDTON=0]
  *   Self Programming disabled; [SELFPRGEN=0]
  *   AVRDUDE_FUSEBITS = -U hfuse:w:0x5F:m -U lfuse:w:0x4C:m -U efuse:w:0xFF:m
+
+ *   - Development setting without 60 Hz mode (two button only) and enabled reset input (reprogramming possible)
+ *   Ext. Crystal Osc.; Frequency 3.0-8.0 MHz; Start-up time PWRDWN/RESET: 258 CK/14 CK + 4.1 ms; [CKSEL=1100 SUT=00]
+ *   Clock output on PORTB4 disabled; [CKOUT=0]
+ *   Divide clock by 8 internally enabled; [CKDIV8=0]
+ *   Brown-out detection disabled; [BODLEVEL=111]
+ *   Debug Wire disabled; [DWEN=1] * (only during development)
+ *   Preserve EEPROM memory through the Chip Erase cycle disabled; [EESAVE=0]
+ *   Reset Disabled (Enable PB5 as i/o pin); [RSTDISBL=0] *
+ *   Serial program downloading (SPI) enabled; [SPIEN=0] *
+ *   Watch-dog Timer disabled; [WDTON=0]
+ *   Self Programming disabled; [SELFPRGEN=0]
+ *   AVRDUDE_FUSEBITS = -U hfuse:w:0xDF:m -U lfuse:w:0x4C:m -U efuse:w:0xFF:m
  *
  * Lock bit configuration:
  *   Mode 3: Further programming and verification disabled
@@ -44,16 +58,16 @@
 
 #include <avr/io.h>
 #include <avr/sleep.h>
+#include <avr/power.h>
 
 typedef enum {MODE_50HZ, MODE_60HZ, MODE_300HZ, MODE_FALSE} mode_t;
-
 
 /************ Device specific definitions ****/
 
 /* Pinning of the buttons to the input pins (all on Port B) */
 #define BTN_50HZ  1
-#define BTN_60HZ  2
-#define BTN_300HZ 5
+#define BTN_60HZ  5
+#define BTN_300HZ 2
 
 /* The LED is connected to Port B, Pin 1 (OC1A) */
 #define PWM_OUT   0
@@ -70,7 +84,7 @@ typedef enum {PWM_50HZ = 23, PWM_60HZ = 19, PWM_300HZ = 3} compare_value_t;
 
 /************ Device specific functions ****/
 
-inline void init() {
+static inline void init() {
      /* Power Reduction Register
       *   Bit 3 – PRTIM1: Power Reduction Timer/Counter1 disabled
       *   Bit 2 – PRTIM0: Power Reduction Timer/Counter0 enabled
@@ -78,11 +92,9 @@ inline void init() {
       *   Bit 0 – PRADC: Power Reduction ADC enabled */
     PRR = 0x07;
 
-    /* Clock Prescaler Change Enable */
-    CLKPR = 0x80;
     /* Set clock prescaler to 256
      *   This sets the Frequency to 4.9152 MHz/256 = 19.2 kHz */
-    CLKPR = 0x08;
+    clock_prescale_set(0x08);
 
     /* Activate internal pull-up resistors */
     PORTB |= (1 << BTN_50HZ) | (1 << BTN_60HZ) | (1 << BTN_300HZ);
@@ -93,15 +105,14 @@ inline void init() {
 
 /* Reads the buttons and returns the according operating mode.
  *   If more than one button is pressed return value is MODE_FALSE */
-inline mode_t read_buttons() {
+static inline mode_t read_buttons() {
     mode_t mode;
     uint8_t btn_pressed = 0;
 
     /* Buttons are low-active */
-    if((PINB  & (1 << BTN_300HZ)) == 0) {
-        mode = MODE_300HZ;
-        btn_pressed++;
-    }
+    /* Read first the button connected to the (later) disabled reset input
+     * If the reset input is still active this pin will always read 0 --> read this and then
+     * it gets overwritten by other buttons */
     if((PINB  & (1 << BTN_60HZ)) == 0) {
         mode = MODE_60HZ;
         btn_pressed++;
@@ -110,8 +121,12 @@ inline mode_t read_buttons() {
         mode = MODE_50HZ;
         btn_pressed++;
     }
+    if((PINB  & (1 << BTN_300HZ)) == 0) {
+        mode = MODE_300HZ;
+        btn_pressed++;
+    }
 
-    if(btn_pressed == 1) {
+    if(btn_pressed >= 1) {
         return mode;
     }
     else {
@@ -119,7 +134,7 @@ inline mode_t read_buttons() {
     }
 }
 
-inline void set_pwm(compare_value_t compare_value) {
+static inline void set_pwm(compare_value_t compare_value) {
     /* Initialize the timer/counter 1
      *   Clear Timer/Counter on Compare Match (CTC1 = 1)
      *   Pulse Width Modulator A enabled (PWM1A = 1)
@@ -163,3 +178,4 @@ int main(void) {
     sleep_enable();
     sleep_cpu();
 }
+

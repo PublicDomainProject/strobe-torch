@@ -90,12 +90,11 @@ ASRC =
 #     (Note: 3 is not always the best optimization level. See avr-libc FAQ.)
 OPT = s
 
-
 # Debugging format.
 #     Native formats for AVR-GCC's -g are dwarf-2 [default] or stabs.
 #     AVR Studio 4.10 requires dwarf-2.
 #     AVR [Extended] COFF format requires stabs, plus an avr-objcopy run.
-DEBUG = stabs # dwarf-2
+DEBUG = dwarf-2
 
 
 # List any extra directories to look for include files here.
@@ -209,7 +208,7 @@ LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB) $(MATH_LIB)
 # Type: avrdude -c ?
 # to get a full listing.
 #
-AVRDUDE_PROGRAMMER = STK500 -B 1kHz
+AVRDUDE_PROGRAMMER = STK500v2 -B 1kHz
 
 # com1 = serial port. Use lpt1 to connect to parallel port.
 AVRDUDE_PORT =  /dev/ttyACM0   # programmer connected to serial device
@@ -217,17 +216,32 @@ AVRDUDE_PORT =  /dev/ttyACM0   # programmer connected to serial device
 AVRDUDE_WRITE_FLASH = -U flash:w:$(TARGET).hex
 #AVRDUDE_WRITE_EEPROM = -U eeprom:w:$(TARGET).eep
 
+## Production setting with 300 Hz mode and disabled reset input
 # Ext. Crystal Osc.; Frequency 3.0-8.0 MHz; Start-up time PWRDWN/RESET: 258 CK/14 CK + 4.1 ms; [CKSEL=1100 SUT=00]
 # Clock output on PORTB4 disabled; [CKOUT=0]
 # Divide clock by 8 internally enabled; [CKDIV8=0]
 # Brown-out detection disabled; [BODLEVEL=111]
-# Debug Wire enabled; [DWEN=1] * (only during development)
+# Debug Wire disabled; [DWEN=1] * (only during development)
 # Preserve EEPROM memory through the Chip Erase cycle disabled; [EESAVE=0]
 # Reset Disabled (Enable PB5 as i/o pin); [RSTDISBL=0] *
-# Serial program downloading (SPI) disabled; [SPIEN=0] *
+# Serial program downloading (SPI) enabled; [SPIEN=0] *
 # Watch-dog Timer disabled; [WDTON=0]
 # Self Programming disabled; [SELFPRGEN=0]
-AVRDUDE_FUSEBITS = -U hfuse:w:0x5F:m -U lfuse:w:0x4C:m -U efuse:w:0xFF:m
+#AVRDUDE_FUSEBITS = -U hfuse:w:0x5F:m -U lfuse:w:0x4C:m -U efuse:w:0xFF:m
+
+## Development setting without 60 Hz mode (two button only) and enabled reset input (reprogramming possible)
+# Ext. Crystal Osc.; Frequency 3.0-8.0 MHz; Start-up time PWRDWN/RESET: 258 CK/14 CK + 4.1 ms; [CKSEL=1100 SUT=00]
+# Clock output on PORTB4 disabled; [CKOUT=0]
+# Divide clock by 8 internally enabled; [CKDIV8=0]
+# Brown-out detection disabled; [BODLEVEL=111]
+# Debug Wire disabled; [DWEN=1] * (only during development)
+# Preserve EEPROM memory through the Chip Erase cycle disabled; [EESAVE=0]
+# Reset Disabled (Enable PB5 as i/o pin); [RSTDISBL=0] *
+# Serial program downloading (SPI) enabled; [SPIEN=0] *
+# Watch-dog Timer disabled; [WDTON=0]
+# Self Programming disabled; [SELFPRGEN=0]
+AVRDUDE_FUSEBITS = -U hfuse:w:0xDF:m -U lfuse:w:0x4C:m -U efuse:w:0xFF:m
+
 
 # Mode 3: Further programming and verification disabled
 AVRDUDE_LOCKBITS = -V -U lock:w:0xFC:m
