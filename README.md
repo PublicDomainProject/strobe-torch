@@ -13,4 +13,4 @@ The device is designed to be very simple to use.
 
 There are three momentary buttons on the front. Each button represents one frequency. So simply press the 50 Hz button and you get a white light beam that flickers with 50 Hz.
 
-When you release the button, the light goes of and the device consumes no energy.
+When you release the button, the light goes off and the device consumes no energy.

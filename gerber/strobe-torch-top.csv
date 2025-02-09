@@ -1,0 +1,17 @@
+DesignatVal              Package                   Mid X   Mid Y   LayerRotation   
+C1      100n             C_0805                     161.544 -96.266top          270
+C2      20pF             C_0603                     153.162-105.029top          180
+C3      20pF             C_0603                     157.226-105.029top          180
+D1      White SideemittinLED_215                    145.415 -70.231top            0
+D2      White SideemittinLED_215                    148.082  -68.58top            0
+D3      Green InGaN      LED_0603                   161.798 -75.438top           90
+D4      BAT54A           SOT-23                     151.003 -85.344top          270
+D5      BAT54A           SOT-23                     151.003 -89.408top           90
+Q1      BSS138           SOT-23                     156.083 -78.359top           90
+R1      1k8              R_0603                     146.177 -74.676top          180
+R2                    150R_0603                     149.225 -74.676top          270
+SW1     50Hz             SW_SPST_PTS645             136.779 -85.598top           90
+SW2     60Hz             SW_SPST_PTS645             136.779 -97.028top           90
+SW3     300Hz            SW_SPST_PTS645             149.733 -97.028top           90
+U1      ATTINY25V-10SU   SO-8_5.3x6.2mm_Pitch1.27mm 157.353 -95.521top           90
+Y1      4.9152MHz        Crystal_SMD_HC49-SD        153.797 -109.22top            0
